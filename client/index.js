@@ -10,6 +10,6 @@
 
 import { registerClientExtension } from 'camunda-modeler-plugin-helpers';
 
-import TestEditorEvents from './TestEditorEvents';
+import AutoSavePlugin from './AutoSavePlugin';
 
-registerClientExtension(TestEditorEvents);
+registerClientExtension(AutoSavePlugin);

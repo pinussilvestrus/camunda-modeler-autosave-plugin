@@ -1,10 +1,11 @@
 {
-  "name": "test-editor-events",
-  "version": "0.0.0",
-  "description": "Camunda Modeler test editor events plug-in",
+  "name": "camunda-modeler-autosave-plugin",
+  "version": "0.1.0",
+  "description": "Automatically save your diagrams modeled in Camunda Modeler",
   "main": "index.js",
   "scripts": {
     "all": "webpack -c",
+    "dev": "webpack -c -w",
     "test": "echo \"no tests\" && exit 0"
   },
   "devDependencies": {
