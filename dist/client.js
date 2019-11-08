@@ -99,6 +99,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/react */ "./node_modules/camunda-modeler-plugin-helpers/react.js");
 /* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/components */ "./node_modules/camunda-modeler-plugin-helpers/components.js");
+/* harmony import */ var _ConfigModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ConfigModal */ "./client/ConfigModal.js");
 /**
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -110,28 +111,25 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-/**
- * An extension that shows how to hook into
- * editor events to accomplish the following:
- *
- * - hook into <bpmn.modeler.configure> to provide a bpmn.modeler extension
- * - hook into <bpmn.modeler.created> to register for bpmn.modeler events
- * - hook into <tab.saved> to perform a post-safe action
- *
- */
 
+const defaultState = {
+  enabled: false,
+  interval: 5,
+  configOpen: false
+};
 class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   constructor(props) {
     super(props);
-    this.state = {
-      enabled: false
-    };
+    this.state = defaultState;
+    this.handleConfigClosed = this.handleConfigClosed.bind(this);
   }
 
   componentDidMount() {
     const {
+      config,
       subscribe
     } = this.props;
+    config.getForPlugin('autoSave', 'config').then(config => this.setState(config));
     subscribe('app.activeTabChanged', () => {
       this.clearTimer();
       this.state.enabled && this.setupTimer();
@@ -139,11 +137,16 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
   }
 
   componentDidUpdate(_, prevState) {
-    if (!this.state.enabled) {
+    const {
+      configOpen,
+      enabled
+    } = this.state;
+
+    if (!enabled || configOpen) {
       this.clearTimer();
     }
 
-    if (!prevState.enabled && this.state.enabled) {
+    if (!prevState.enabled && !configOpen && enabled) {
       this.setupTimer();
     }
   }
@@ -152,7 +155,7 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
     this.timer = setTimeout(() => {
       this.save();
       this.setupTimer();
-    }, 10000);
+    }, this.state.interval * 1000);
   }
 
   clearTimer() {
@@ -170,25 +173,96 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
           title: 'Failed to save'
         });
       }
-
-      return displayNotification({
-        title: 'Autosaved',
-        duration: 1500
-      });
     });
   }
 
+  handleConfigClosed(newConfig) {
+    this.setState({
+      configOpen: false
+    });
+
+    if (newConfig) {
+      this.props.config.setForPlugin('autoSave', 'config', newConfig).catch(console.error);
+      this.setState(newConfig);
+    }
+  }
+
   render() {
+    const {
+      enabled,
+      interval
+    } = this.state;
+    const initValues = {
+      enabled,
+      interval
+    };
     return camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__["Fill"], {
-      slot: "toolbar"
+      slot: "toolbar",
+      group: "9_autoSave"
     }, camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
       type: "button",
       onClick: () => this.setState({
-        enabled: !this.state.enabled
+        configOpen: true
       })
-    }, `Autosave: ${this.state.enabled ? 'On' : 'Off'} `)));
+    }, "Configure autosave")), this.state.configOpen && camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ConfigModal__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      onClose: this.handleConfigClosed,
+      initValues: initValues
+    }));
   }
 
+}
+
+/***/ }),
+
+/***/ "./client/ConfigModal.js":
+/*!*******************************!*\
+  !*** ./client/ConfigModal.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ConfigModal; });
+/* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/react */ "./node_modules/camunda-modeler-plugin-helpers/react.js");
+/* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/components */ "./node_modules/camunda-modeler-plugin-helpers/components.js");
+
+
+function ConfigModal({
+  initValues,
+  onClose
+}) {
+  const [enabled, setEnabled] = Object(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initValues.enabled);
+  const [interval, setAutoSaveInterval] = Object(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initValues.interval);
+  const onSubmit = Object(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(() => onClose({
+    enabled,
+    interval
+  }));
+  return camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
+    onClose: onClose
+  }, camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__["Modal"].Title, null, "AutoSave Configuration"), camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__["Modal"].Body, null, camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
+    id: "autoSaveConfigForm",
+    onSubmit: onSubmit
+  }, camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Enabled:", camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "checkbox",
+    name: "enabled",
+    checked: enabled,
+    onChange: () => setEnabled(!enabled)
+  }))), camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("p", null, camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("label", null, "Interval (seconds):", camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("input", {
+    type: "number",
+    name: "interval",
+    value: interval,
+    onChange: event => setAutoSaveInterval(Number(event.target.value))
+  }))))), camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__["Modal"].Footer, null, camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", {
+    id: "autoSaveConfigButtons"
+  }, camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    type: "submit",
+    form: "autoSaveConfigForm"
+  }, "Save"), camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
+    type: "button",
+    onClick: () => onClose()
+  }, "Cancel"))));
 }
 
 /***/ }),

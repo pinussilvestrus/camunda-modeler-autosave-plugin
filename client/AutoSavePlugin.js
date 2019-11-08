@@ -9,31 +9,33 @@
  */
 
 import React, { Fragment, PureComponent } from 'camunda-modeler-plugin-helpers/react';
-import { Fill, Modal } from 'camunda-modeler-plugin-helpers/components';
+import { Fill } from 'camunda-modeler-plugin-helpers/components';
 
+import ConfigModal from './ConfigModal';
 
-/**
- * An extension that shows how to hook into
- * editor events to accomplish the following:
- *
- * - hook into <bpmn.modeler.configure> to provide a bpmn.modeler extension
- * - hook into <bpmn.modeler.created> to register for bpmn.modeler events
- * - hook into <tab.saved> to perform a post-safe action
- *
- */
+const defaultState = {
+  enabled: false,
+  interval: 5,
+  configOpen: false
+};
+
 export default class AutoSavePlugin extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-      enabled: false
-    };
+    this.state = defaultState;
+
+    this.handleConfigClosed = this.handleConfigClosed.bind(this);
   }
 
   componentDidMount() {
     const {
+      config,
       subscribe
     } = this.props;
+
+    config.getForPlugin('autoSave', 'config')
+      .then(config => this.setState(config));
 
     subscribe('app.activeTabChanged', () => {
       this.clearTimer();
@@ -42,11 +44,16 @@ export default class AutoSavePlugin extends PureComponent {
   }
 
   componentDidUpdate(_, prevState) {
-    if (!this.state.enabled) {
+    const {
+      configOpen,
+      enabled
+    } = this.state;
+
+    if (!enabled || configOpen) {
       this.clearTimer();
     }
 
-    if (!prevState.enabled && this.state.enabled) {
+    if (!prevState.enabled && !configOpen && enabled) {
       this.setupTimer();
     }
   }
@@ -55,7 +62,7 @@ export default class AutoSavePlugin extends PureComponent {
     this.timer = setTimeout(() => {
       this.save();
       this.setupTimer();
-    }, 10000);
+    }, this.state.interval * 1000);
   }
 
   clearTimer() {
@@ -73,18 +80,43 @@ export default class AutoSavePlugin extends PureComponent {
         if (!tab) {
           return displayNotification({ title: 'Failed to save' });
         }
-
-        return displayNotification({ title: 'Autosaved', duration: 1500 });
       });
   }
 
+  handleConfigClosed(newConfig) {
+    this.setState({ configOpen: false });
+
+    if (newConfig) {
+      this.props.config.setForPlugin('autoSave', 'config', newConfig)
+        .catch(console.error);
+
+      this.setState(newConfig);
+    }
+  }
+
   render() {
+    const {
+      enabled,
+      interval
+    } = this.state;
+
+    const initValues = {
+      enabled,
+      interval
+    };
+
     return <Fragment>
-      <Fill slot="toolbar">
-        <button type="button" onClick={() => this.setState({ enabled: !this.state.enabled })}>
-          { `Autosave: ${this.state.enabled ? 'On' : 'Off'} ` }
+      <Fill slot="toolbar" group="9_autoSave">
+        <button type="button" onClick={() => this.setState({ configOpen: true })}>
+          Configure autosave
         </button>
       </Fill>
+      { this.state.configOpen && (
+        <ConfigModal
+          onClose={ this.handleConfigClosed }
+          initValues={ initValues }
+        />
+      )}
     </Fragment>
   }
 }
