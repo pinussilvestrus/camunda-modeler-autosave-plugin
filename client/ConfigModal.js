@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'camunda-modeler-plugin-helpers/react';
+import React, { useState } from 'camunda-modeler-plugin-helpers/react';
 import { Modal } from 'camunda-modeler-plugin-helpers/components';
 
 
@@ -12,7 +12,7 @@ export default function ConfigModal({ initValues, onClose }) {
   const [ enabled, setEnabled ] = useState(initValues.enabled);
   const [ interval, setAutoSaveInterval ] = useState(initValues.interval);
 
-  const onSubmit = useCallback(() => onClose({ enabled, interval }));
+  const onSubmit = () => onClose({ enabled, interval });
 
   return <Modal onClose={ onClose }>
     <Title>
