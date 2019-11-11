@@ -2,6 +2,12 @@ import React, { useCallback, useState } from 'camunda-modeler-plugin-helpers/rea
 import { Modal } from 'camunda-modeler-plugin-helpers/components';
 
 
+// polyfill upcoming structural components
+const Title = Modal.Title || (({ children }) => <h2>{ children }</h2>);
+const Body = Modal.Body || (({ children }) => <div>{ children }</div>);
+const Footer = Modal.Footer || (({ children }) => <div>{ children }</div>);
+
+
 export default function ConfigModal({ initValues, onClose }) {
   const [ enabled, setEnabled ] = useState(initValues.enabled);
   const [ interval, setAutoSaveInterval ] = useState(initValues.interval);
@@ -9,11 +15,11 @@ export default function ConfigModal({ initValues, onClose }) {
   const onSubmit = useCallback(() => onClose({ enabled, interval }));
 
   return <Modal onClose={ onClose }>
-    <Modal.Title>
+    <Title>
       AutoSave Configuration
-    </Modal.Title>
+    </Title>
 
-    <Modal.Body>
+    <Body>
       <form id="autoSaveConfigForm" onSubmit={ onSubmit }>
         <p>
           <label>
@@ -39,14 +45,14 @@ export default function ConfigModal({ initValues, onClose }) {
           </label>
         </p>
       </form>
-    </Modal.Body>
+    </Body>
 
-    <Modal.Footer>
+    <Footer>
       <div id="autoSaveConfigButtons">
         <button type="submit" form="autoSaveConfigForm">Save</button>
         <button type="button" onClick={ () => onClose() }>Cancel</button>
       </div>
-    </Modal.Footer>
+    </Footer>
   </Modal>
 }
 
