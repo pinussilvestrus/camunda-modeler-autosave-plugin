@@ -248,10 +248,12 @@ function ConfigModal({
 }) {
   const [enabled, setEnabled] = Object(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initValues.enabled);
   const [interval, setAutoSaveInterval] = Object(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__["useState"])(initValues.interval);
-  const onSubmit = Object(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__["useCallback"])(() => onClose({
+
+  const onSubmit = () => onClose({
     enabled,
     interval
-  }));
+  });
+
   return camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
     onClose: onClose
   }, camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Title, null, "AutoSave Configuration"), camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Body, null, camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {

@@ -31,5 +31,10 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    alias: {
+      react: 'camunda-modeler-plugin-helpers/react'
+    }
+  },
   devtool: 'cheap-module-source-map'
 };
