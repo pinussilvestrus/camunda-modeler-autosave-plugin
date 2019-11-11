@@ -32,6 +32,7 @@ export default function ConfigModal({ initValues, onClose }) {
             <input
               type="number"
               name="interval"
+              min="1"
               value={ interval }
               onChange={ event => setAutoSaveInterval(Number(event.target.value)) }
             />
