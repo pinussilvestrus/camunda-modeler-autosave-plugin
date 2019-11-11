@@ -130,13 +130,23 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
       subscribe
     } = this.props;
     config.getForPlugin('autoSave', 'config').then(config => this.setState(config));
-    subscribe('app.activeTabChanged', () => {
+    subscribe('app.activeTabChanged', ({
+      activeTab
+    }) => {
       this.clearTimer();
-      this.state.enabled && this.setupTimer();
+
+      if (this.state.enabled && activeTab.file && activeTab.file.path) {
+        this.setupTimer();
+      }
+    });
+    subscribe('tab.saved', () => {
+      if (!this.timer && this.state.enabled) {
+        this.setupTimer();
+      }
     });
   }
 
-  componentDidUpdate(_, prevState) {
+  componentDidUpdate() {
     const {
       configOpen,
       enabled
@@ -146,7 +156,7 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
       this.clearTimer();
     }
 
-    if (!prevState.enabled && !configOpen && enabled) {
+    if (!this.timer && !configOpen && enabled) {
       this.setupTimer();
     }
   }
@@ -159,10 +169,14 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
   }
 
   clearTimer() {
-    this.timer && clearTimeout(this.timer);
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
+    }
   }
 
   save() {
+    debugger;
     const {
       displayNotification,
       triggerAction
