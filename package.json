@@ -3,6 +3,15 @@
   "version": "0.1.0",
   "description": "Automatically save your diagrams modeled in Camunda Modeler",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pinussilvestrus/camunda-modeler-autosave-plugin"
+  },
+  "contributors": [
+    "Maciej Barelkowski <maciej.barelkowski@camunda.com> (https://github.com/barmac)",
+    "Niklas Kiefer <niklas.kiefer@camunda.com (https://github.com/pinussilvestrus)"
+  ],
+  "license": "MIT",
   "scripts": {
     "all": "webpack -c",
     "dev": "webpack -c -w",
