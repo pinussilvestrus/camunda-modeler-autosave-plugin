@@ -7,7 +7,7 @@ const Title = Modal.Title || (({ children }) => <h2>{ children }</h2>);
 const Body = Modal.Body || (({ children }) => <div>{ children }</div>);
 const Footer = Modal.Footer || (({ children }) => <div>{ children }</div>);
 
-
+// we can even use hooks to render into the application
 export default function ConfigModal({ initValues, onClose }) {
   const [ enabled, setEnabled ] = useState(initValues.enabled);
   const [ interval, setAutoSaveInterval ] = useState(initValues.interval);

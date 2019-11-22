@@ -18,7 +18,10 @@ const defaultState = {
   interval: 5,
   configOpen: false
 };
-
+/**
+ * An example client extension plugin to enable auto saving functionality
+ * into the Camunda Modeler
+ */
 export default class AutoSavePlugin extends PureComponent {
   constructor(props) {
     super(props);
@@ -29,14 +32,26 @@ export default class AutoSavePlugin extends PureComponent {
   }
 
   componentDidMount() {
+
+    /**
+    * The component props include everything the Application offers plugins,
+    * which includes:
+    * - config: save and retrieve information to the local configuration
+    * - subscribe: hook into application events, like <tab.saved>, <app.activeTabChanged> ...
+    * - triggerAction: execute editor actions, like <save>, <open-diagram> ...
+    * - log: log information into the Log panel
+    * - displayNotification: show notifications inside the application
+    */
     const {
       config,
       subscribe
     } = this.props;
 
+    // retrieve plugin related information from the application configuration
     config.getForPlugin('autoSave', 'config')
       .then(config => this.setState(config));
 
+    // subscribe to the event when the active tab changed in the application
     subscribe('app.activeTabChanged', ({ activeTab }) => {
       this.clearTimer();
 
@@ -45,6 +60,7 @@ export default class AutoSavePlugin extends PureComponent {
       }
     });
 
+    // subscribe to the event when a tab was saved in the application
     subscribe('tab.saved', () => {
       if (!this.timer && this.state.enabled) {
         this.setupTimer();
@@ -87,6 +103,7 @@ export default class AutoSavePlugin extends PureComponent {
       triggerAction
     } = this.props;
 
+    // trigger a tab save operation
     triggerAction('save')
       .then(tab => {
         if (!tab) {
@@ -99,6 +116,8 @@ export default class AutoSavePlugin extends PureComponent {
     this.setState({ configOpen: false });
 
     if (newConfig) {
+
+      // via <config> it is also possible to save data into the application configuration
       this.props.config.setForPlugin('autoSave', 'config', newConfig)
         .catch(console.error);
 
@@ -106,6 +125,10 @@ export default class AutoSavePlugin extends PureComponent {
     }
   }
 
+  /**
+   * render any React component you like to extend the existing 
+   * Camunda Modeler application UI
+   */
   render() {
     const {
       enabled,
@@ -117,6 +140,7 @@ export default class AutoSavePlugin extends PureComponent {
       interval
     };
 
+    // we can use fills to hook React components into certain places of the UI
     return <Fragment>
       <Fill slot="toolbar" group="9_autoSave">
         <button type="button" onClick={() => this.setState({ configOpen: true })}>
@@ -129,6 +153,6 @@ export default class AutoSavePlugin extends PureComponent {
           initValues={ initValues }
         />
       )}
-    </Fragment>
+    </Fragment>;
   }
 }
