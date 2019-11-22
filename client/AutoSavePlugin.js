@@ -8,6 +8,7 @@
  * except in compliance with the MIT License.
  */
 
+/* eslint-disable no-unused-vars*/
 import React, { Fragment, PureComponent } from 'camunda-modeler-plugin-helpers/react';
 import { Fill } from 'camunda-modeler-plugin-helpers/components';
 
@@ -18,6 +19,7 @@ const defaultState = {
   interval: 5,
   configOpen: false
 };
+
 /**
  * An example client extension plugin to enable auto saving functionality
  * into the Camunda Modeler
@@ -126,7 +128,7 @@ export default class AutoSavePlugin extends PureComponent {
   }
 
   /**
-   * render any React component you like to extend the existing 
+   * render any React component you like to extend the existing
    * Camunda Modeler application UI
    */
   render() {
@@ -143,7 +145,7 @@ export default class AutoSavePlugin extends PureComponent {
     // we can use fills to hook React components into certain places of the UI
     return <Fragment>
       <Fill slot="toolbar" group="9_autoSave">
-        <button type="button" onClick={() => this.setState({ configOpen: true })}>
+        <button type="button" onClick={ () => this.setState({ configOpen: true }) }>
           Configure autosave
         </button>
       </Fill>

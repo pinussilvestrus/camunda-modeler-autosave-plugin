@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'camunda-modeler-plugin-helpers/react';
 import { Modal } from 'camunda-modeler-plugin-helpers/components';
 
@@ -53,6 +54,6 @@ export default function ConfigModal({ initValues, onClose }) {
         <button type="button" onClick={ () => onClose() }>Cancel</button>
       </div>
     </Footer>
-  </Modal>
+  </Modal>;
 }
 

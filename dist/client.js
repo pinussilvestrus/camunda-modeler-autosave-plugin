@@ -110,6 +110,8 @@ __webpack_require__.r(__webpack_exports__);
  * except in compliance with the MIT License.
  */
 
+/* eslint-disable no-unused-vars*/
+
 
 
 const defaultState = {
@@ -219,7 +221,7 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
     }
   }
   /**
-   * render any React component you like to extend the existing 
+   * render any React component you like to extend the existing
    * Camunda Modeler application UI
    */
 
@@ -265,6 +267,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/react */ "./node_modules/camunda-modeler-plugin-helpers/react.js");
 /* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/components */ "./node_modules/camunda-modeler-plugin-helpers/components.js");
+/* eslint-disable no-unused-vars */
 
  // polyfill upcoming structural components
 
