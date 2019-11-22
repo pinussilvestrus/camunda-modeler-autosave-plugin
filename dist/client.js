@@ -117,6 +117,11 @@ const defaultState = {
   interval: 5,
   configOpen: false
 };
+/**
+ * An example client extension plugin to enable auto saving functionality
+ * into the Camunda Modeler
+ */
+
 class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__["PureComponent"] {
   constructor(props) {
     super(props);
@@ -125,11 +130,22 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
   }
 
   componentDidMount() {
+    /**
+    * The component props include everything the Application offers plugins,
+    * which includes:
+    * - config: save and retrieve information to the local configuration
+    * - subscribe: hook into application events, like <tab.saved>, <app.activeTabChanged> ...
+    * - triggerAction: execute editor actions, like <save>, <open-diagram> ...
+    * - log: log information into the Log panel
+    * - displayNotification: show notifications inside the application
+    */
     const {
       config,
       subscribe
-    } = this.props;
-    config.getForPlugin('autoSave', 'config').then(config => this.setState(config));
+    } = this.props; // retrieve plugin related information from the application configuration
+
+    config.getForPlugin('autoSave', 'config').then(config => this.setState(config)); // subscribe to the event when the active tab changed in the application
+
     subscribe('app.activeTabChanged', ({
       activeTab
     }) => {
@@ -138,7 +154,8 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
       if (this.state.enabled && activeTab.file && activeTab.file.path) {
         this.setupTimer();
       }
-    });
+    }); // subscribe to the event when a tab was saved in the application
+
     subscribe('tab.saved', () => {
       if (!this.timer && this.state.enabled) {
         this.setupTimer();
@@ -176,11 +193,11 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
   }
 
   save() {
-    debugger;
     const {
       displayNotification,
       triggerAction
-    } = this.props;
+    } = this.props; // trigger a tab save operation
+
     triggerAction('save').then(tab => {
       if (!tab) {
         return displayNotification({
@@ -196,10 +213,16 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
     });
 
     if (newConfig) {
+      // via <config> it is also possible to save data into the application configuration
       this.props.config.setForPlugin('autoSave', 'config', newConfig).catch(console.error);
       this.setState(newConfig);
     }
   }
+  /**
+   * render any React component you like to extend the existing 
+   * Camunda Modeler application UI
+   */
+
 
   render() {
     const {
@@ -209,7 +232,8 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
     const initValues = {
       enabled,
       interval
-    };
+    }; // we can use fills to hook React components into certain places of the UI
+
     return camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__["Fill"], {
       slot: "toolbar",
       group: "9_autoSave"
@@ -254,7 +278,8 @@ const Body = camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_
 
 const Footer = camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__["Modal"].Footer || (({
   children
-}) => camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, children));
+}) => camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, children)); // we can even use hooks to render into the application
+
 
 function ConfigModal({
   initValues,
