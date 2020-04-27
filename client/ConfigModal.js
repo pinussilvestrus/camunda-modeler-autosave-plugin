@@ -15,6 +15,7 @@ export default function ConfigModal({ initValues, onClose }) {
 
   const onSubmit = () => onClose({ enabled, interval });
 
+  // we can use the built-in styles, e.g. by adding "btn btn-primary" class names
   return <Modal onClose={ onClose }>
     <Title>
       AutoSave Configuration
@@ -50,8 +51,8 @@ export default function ConfigModal({ initValues, onClose }) {
 
     <Footer>
       <div id="autoSaveConfigButtons">
-        <button type="submit" form="autoSaveConfigForm">Save</button>
-        <button type="button" onClick={ () => onClose() }>Cancel</button>
+        <button type="submit" class="btn btn-primary" form="autoSaveConfigForm">Save</button>
+        <button type="button" class="btn btn-secondary" onClick={ () => onClose() }>Cancel</button>
       </div>
     </Footer>
   </Modal>;

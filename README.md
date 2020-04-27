@@ -77,6 +77,27 @@ render() {
 }
 ```
 
+When creating our UI extensions, we can even rely on built-in styles, like primary and secondary buttons. This is important to let our new components fit into the application look & feel.
+
+```html
+<Modal onClose={ onClose }>
+  <Title>
+    AutoSave Configuration
+  </Title>
+
+  <Body>
+    /* ... */
+  </Body>
+
+  <Footer>
+    <div id="autoSaveConfigButtons">
+      <button type="submit" class="btn btn-primary" form="autoSaveConfigForm">Save</button>
+      <button type="button" class="btn btn-secondary" onClick={ () => onClose() }>Cancel</button>
+    </div>
+  </Footer>
+</Modal>
+```
+
 When the plugin component got first time rendered (cf. `componentDidMount`), it _retrieves plugin specific information_ from the application configuration to properly configure the auto save mechanism.
 
 ```js

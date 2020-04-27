@@ -294,7 +294,8 @@ function ConfigModal({
   const onSubmit = () => onClose({
     enabled,
     interval
-  });
+  }); // we can use the built-in styles, e.g. by adding "btn btn-primary" class names
+
 
   return /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__["Modal"], {
     onClose: onClose
@@ -316,9 +317,11 @@ function ConfigModal({
     id: "autoSaveConfigButtons"
   }, /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     type: "submit",
+    class: "btn btn-primary",
     form: "autoSaveConfigForm"
   }, "Save"), /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("button", {
     type: "button",
+    class: "btn btn-secondary",
     onClick: () => onClose()
   }, "Cancel"))));
 }
