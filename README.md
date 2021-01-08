@@ -1,6 +1,6 @@
 # camunda-modeler-autosave-plugin
 
-[![Build Status](https://travis-ci.org/pinussilvestrus/camunda-modeler-autosave-plugin.svg?branch=master)](https://travis-ci.org/pinussilvestrus/camunda-modeler-autosave-plugin)
+![Build Status](https://github.com/pinussilvestrus/camunda-modeler-autosave-plugin/workflows/ci/badge.svg)
 [![Compatible with Camunda Modeler version 3.4](https://img.shields.io/badge/Camunda%20Modeler-3.4+-blue.svg)](https://github.com/camunda/camunda-modeler)
 
 This offers an *auto save mechanism* to save your diagram changes after a defined amount of time.
