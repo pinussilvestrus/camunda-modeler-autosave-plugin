@@ -150,8 +150,8 @@ export default class AutoSavePlugin extends PureComponent {
 
     // we can use fills to hook React components into certain places of the UI
     return <Fragment>
-      <Fill slot="toolbar" group="9_autoSave">
-        <button type="button" onClick={ () => this.setState({ configOpen: true }) }>
+      <Fill slot="status-bar__app" group="1_autosave">
+        <button className="btn" onClick={ () => this.setState({ configOpen: true }) }>
           Configure autosave
         </button>
       </Fill>

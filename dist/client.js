@@ -159,14 +159,14 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
     }; // we can use fills to hook React components into certain places of the UI
 
     return /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__.Fill, {
-      slot: "toolbar",
-      group: "9_autoSave"
+      slot: "status-bar__app",
+      group: "1_autosave"
     }, /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement("button", {
-      type: "button",
+      className: "btn",
       onClick: () => this.setState({
         configOpen: true
       })
-    }, "Configure autosave")), this.state.configOpen && /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ConfigModal__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    }, "Configure autosave")), this.state.configOpen && /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ConfigModal__WEBPACK_IMPORTED_MODULE_2__.default, {
       onClose: this.handleConfigClosed,
       initValues: initValues
     }));
@@ -570,7 +570,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-(0,camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__.registerClientExtension)(_AutoSavePlugin__WEBPACK_IMPORTED_MODULE_1__["default"]);
+(0,camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__.registerClientExtension)(_AutoSavePlugin__WEBPACK_IMPORTED_MODULE_1__.default);
 })();
 
 /******/ })()
