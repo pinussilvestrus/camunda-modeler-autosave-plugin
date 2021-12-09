@@ -39,8 +39,11 @@ $ npm run all
 
 ## Compatibility Notice
 
-This plug-in is compatible with Camunda Modeler `v3.4+`.
+This plugin is currently compatible with following Camunda Modeler versions.
 
+| Camunda Modeler | Autosave Plugin |
+|---|---|
+| 3.4 - 4.12  | 0.2 |
 
 ## About
 
