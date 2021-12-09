@@ -12,6 +12,9 @@
 import React, { Fragment, PureComponent } from 'camunda-modeler-plugin-helpers/react';
 import { Fill } from 'camunda-modeler-plugin-helpers/components';
 
+import Icon from '../resources/timer.svg';
+
+
 import ConfigModal from './ConfigModal';
 
 const defaultState = {
@@ -152,7 +155,7 @@ export default class AutoSavePlugin extends PureComponent {
     return <Fragment>
       <Fill slot="status-bar__app" group="1_autosave">
         <button className="btn" onClick={ () => this.setState({ configOpen: true }) }>
-          Configure autosave
+          <Icon />
         </button>
       </Fill>
       { this.state.configOpen && (

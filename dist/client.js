@@ -15,7 +15,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/react */ "./node_modules/camunda-modeler-plugin-helpers/react.js");
 /* harmony import */ var camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! camunda-modeler-plugin-helpers/components */ "./node_modules/camunda-modeler-plugin-helpers/components.js");
-/* harmony import */ var _ConfigModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ConfigModal */ "./client/ConfigModal.js");
+/* harmony import */ var _resources_timer_svg__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../resources/timer.svg */ "./resources/timer.svg");
+/* harmony import */ var _ConfigModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ConfigModal */ "./client/ConfigModal.js");
 /**
  * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH
  * under one or more contributor license agreements. See the NOTICE file
@@ -27,6 +28,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 /* eslint-disable no-unused-vars*/
+
 
 
 
@@ -166,7 +168,7 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
       onClick: () => this.setState({
         configOpen: true
       })
-    }, "Configure autosave")), this.state.configOpen && /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ConfigModal__WEBPACK_IMPORTED_MODULE_2__.default, {
+    }, /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_resources_timer_svg__WEBPACK_IMPORTED_MODULE_2__.default, null))), this.state.configOpen && /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_ConfigModal__WEBPACK_IMPORTED_MODULE_3__.default, {
       onClose: this.handleConfigClosed,
       initValues: initValues
     }));
@@ -478,6 +480,40 @@ if (!window.react) {
  * @type {import('react')}
  */
 module.exports = window.react;
+
+/***/ }),
+
+/***/ "./resources/timer.svg":
+/*!*****************************!*\
+  !*** ./resources/timer.svg ***!
+  \*****************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/camunda-modeler-plugin-helpers/react.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (({
+  styles = {},
+  ...props
+}) => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("svg", _extends({
+  width: "16",
+  height: "16",
+  fill: "none",
+  xmlns: "http://www.w3.org/2000/svg"
+}, props), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
+  d: "M11.301 1.796l-.537.93L12.626 3.8l.537-.93a.538.538 0 00-.197-.735l-.93-.538a.537.537 0 00-.735.198z",
+  fill: "#000"
+}), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("path", {
+  d: "M8 2.42c.34 0 .672.033 1 .08v-.87l.687-.005V.5a.5.5 0 00-.5-.5h-2.37a.5.5 0 00-.5.5v1.125L7 1.63v.87c.328-.047.66-.08 1-.08zM8 3a6.5 6.5 0 100 13A6.5 6.5 0 008 3zm3.037 9.555L7.25 9.933V6.23h1.093v3.13l3.317 2.295-.623.899z",
+  fill: "currentcolor"
+})));
 
 /***/ })
 
