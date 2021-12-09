@@ -12,10 +12,11 @@
 import React, { Fragment, PureComponent } from 'camunda-modeler-plugin-helpers/react';
 import { Fill } from 'camunda-modeler-plugin-helpers/components';
 
+import classNames from 'classnames';
+
 import Icon from '../resources/timer.svg';
 
-
-import ConfigModal from './ConfigModal';
+import ConfigOverlay from './ConfigOverlay';
 
 const defaultState = {
   enabled: false,
@@ -39,6 +40,8 @@ export default class AutoSavePlugin extends PureComponent {
     this.state = defaultState;
 
     this.handleConfigClosed = this.handleConfigClosed.bind(this);
+
+    this._buttonRef = React.createRef();
   }
 
   componentDidMount() {
@@ -142,6 +145,7 @@ export default class AutoSavePlugin extends PureComponent {
    */
   render() {
     const {
+      configOpen,
       enabled,
       interval
     } = this.state;
@@ -154,12 +158,16 @@ export default class AutoSavePlugin extends PureComponent {
     // we can use fills to hook React components into certain places of the UI
     return <Fragment>
       <Fill slot="status-bar__app" group="1_autosave">
-        <button className="btn" onClick={ () => this.setState({ configOpen: true }) }>
+        <button
+          ref={ this._buttonRef }
+          className={ classNames('btn', { 'btn--active': configOpen }) }
+          onClick={ () => this.setState({ configOpen: true }) }>
           <Icon />
         </button>
       </Fill>
       { this.state.configOpen && (
-        <ConfigModal
+        <ConfigOverlay
+          anchor={ this._buttonRef.current }
           onClose={ this.handleConfigClosed }
           initValues={ initValues }
         />
