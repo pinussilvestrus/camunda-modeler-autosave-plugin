@@ -1,9 +1,9 @@
 # camunda-modeler-autosave-plugin
 
 ![Build Status](https://github.com/pinussilvestrus/camunda-modeler-autosave-plugin/workflows/ci/badge.svg)
-[![Compatible with Camunda Modeler version 3.4](https://img.shields.io/badge/Camunda%20Modeler-3.4+-blue.svg)](https://github.com/camunda/camunda-modeler)
+[![Compatible with Camunda Modeler version 5](https://img.shields.io/badge/Camunda%20Modeler-5.0+-blue.svg)](https://github.com/camunda/camunda-modeler)
 
-This offers an *auto save mechanism* to save your diagram changes after a defined amount of time.
+This offers an *auto-save mechanism* to save your diagram changes after a defined amount of time.
 
 This includes an example plugin on how to extend the [Camunda Modeler](https://github.com/camunda/camunda-modeler) user interface as [React](https://reactjs.org/) component.
 
@@ -13,7 +13,7 @@ This includes an example plugin on how to extend the [Camunda Modeler](https://g
 
 1. Download and copy this repository into the `plugins` directory of the Camunda Modeler
 2. Start the Camunda Modeler
-3. Enable and configure auto save mechanism via Modal
+3. Enable and configure autosave mechanism via overlay
 
 Refer to the [plugins documentation](https://github.com/camunda/camunda-modeler/tree/master/docs/plugins#plugging-into-the-camunda-modeler) to get detailed information on how to create and integrate Camunda Modeler plugins.
 
@@ -31,7 +31,7 @@ Install all dependencies
 $ npm install
 ```
 
-To work properly inside the Camunda Modeler this plugin needs to be bundled.
+To work properly inside the Camunda Modeler, this plugin needs to be bundled.
 
 ```bash
 $ npm run all
@@ -39,21 +39,23 @@ $ npm run all
 
 ## Compatibility Notice
 
-This plugin is currently compatible with following Camunda Modeler versions.
+This plugin is currently compatible with the following Camunda Modeler versions.
 
 | Camunda Modeler | Autosave Plugin |
 |---|---|
 | 3.4 - 4.12  | 0.2 |
+| 5.x | 0.3 or newer |
 
 ## About
 
-The [`AutoSavePlugin`](./client/AutoSavePlugin.js) component implements the basic functionality to render the auto save mechanism into the Camunda Modeler application.
+The [`AutoSavePlugin`](./client/AutoSavePlugin.js) component implements the basic functionality to render the autosave mechanism into the Camunda Modeler application.
 
-First of all it offers a `render` method to return the React component to be included in the application. It handles the appearance [configuration modal](./client/ConfigModal.js) via it's state and _fills an action button_ into the application's Toolbar component.
+First of all, it offers a `render` method to return the React component to be included in the application. It handles the appearance [configuration overlay](./client/ConfigOverlay.js) via its state and _fills an action button_ into the application's status bar component.
 
 ```js
 render() {
   const {
+    configOpen,
     enabled,
     interval
   } = this.state;
@@ -65,43 +67,48 @@ render() {
 
   // we can use fills to hook React components into certain places of the UI
   return <Fragment>
-    <Fill slot="toolbar" group="9_autoSave">
-      <button type="button" onClick={() => this.setState({ configOpen: true })}>
-        Configure autosave
+    <Fill slot="status-bar__app" group="1_autosave">
+      <button
+        ref={ this._buttonRef }
+        className={ classNames('btn', { 'btn--active': configOpen }) }
+        onClick={ () => this.setState({ configOpen: true }) }>
+        <Icon />
       </button>
     </Fill>
     { this.state.configOpen && (
-      <ConfigModal
+      <ConfigOverlay
+        anchor={ this._buttonRef.current }
         onClose={ this.handleConfigClosed }
         initValues={ initValues }
       />
     )}
-    </Fragment>;
+  </Fragment>;
 }
 ```
 
-When creating our UI extensions, we can even rely on built-in styles, like primary and secondary buttons. This is important to let our new components fit into the application look & feel.
+When creating our UI extensions, we can even rely on built-in styles, like sections, primary and secondary buttons. This is important to let our new components fit into the application look & feel.
 
 ```html
-<Modal onClose={ onClose }>
-  <Title>
-    AutoSave Configuration
-  </Title>
+<Overlay anchor={ anchor } onClose={ onClose } offset={ OFFSET }>
+  <Section>
+    <Section.Header>Auto save configuration</Section.Header>
+    <Section.Body>
+      /* ... */
 
-  <Body>
-    /* ... */
-  </Body>
-
-  <Footer>
-    <div id="autoSaveConfigButtons">
-      <button type="submit" class="btn btn-primary" form="autoSaveConfigForm">Save</button>
-      <button type="button" class="btn btn-secondary" onClick={ () => onClose() }>Cancel</button>
-    </div>
-  </Footer>
-</Modal>
+      <Section.Actions>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          form="autoSaveConfigForm">
+            Save
+        </button>
+      </Section.Actions>
+    </Section.Body>
+  </Section>
+</Overlay>
 ```
 
-When the plugin component got first time rendered (cf. `componentDidMount`), it _retrieves plugin specific information_ from the application configuration to properly configure the auto save mechanism.
+When the plugin component got first time rendered (cf. `componentDidMount`), it _retrieves plugin specific information_ from the application configuration to properly configure the autosave mechanism.
 
 ```js
 // retrieve plugin related information from the application configuration
@@ -148,7 +155,7 @@ save() {
 }
 ```
 
-To properly work inside the Camunda Modeler application, every plugin needs to have a general entry point, in this example named the [`index.js`](./index.js). This gives general information about where to find the React component, general styling and, if needed, application menu extensions. To get detailed information about how to integrate a plugin into the Camunda Modeler, please refer to the existing [plugins documentation](https://github.com/camunda/camunda-modeler/tree/master/docs/plugins#plugging-into-the-camunda-modeler).
+To properly work inside the Camunda Modeler application, every plugin needs to have a general entry point, in this example named the [`index.js`](./index.js). This gives general information about where to find the React component, general styling, and, if needed, application menu extensions. To get detailed information about how to integrate a plugin into the Camunda Modeler, please refer to the existing [plugins documentation](https://github.com/camunda/camunda-modeler/tree/master/docs/plugins#plugging-into-the-camunda-modeler).
 
 ```js
 module.exports = {
