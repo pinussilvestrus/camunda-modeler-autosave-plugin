@@ -13,10 +13,11 @@
   ],
   "license": "MIT",
   "scripts": {
-    "all": "webpack",
+    "all": "run-s build test",
+    "build": "webpack",
     "dev": "webpack -w",
     "lint": "eslint .",
-    "test": "run-s lint all"
+    "test": "run-s lint"
   },
   "devDependencies": {
     "@babel/core": "^7.16.0",
