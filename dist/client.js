@@ -41,6 +41,11 @@ const defaultState = {
  */
 
 class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.PureComponent {
+  activeTab = {
+    id: '__empty',
+    type: 'empty'
+  };
+
   constructor(props) {
     super(props);
     this.state = defaultState;
@@ -68,6 +73,7 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
       activeTab
     }) => {
       this.clearTimer();
+      this.activeTab = activeTab;
 
       if (this.state.enabled && activeTab.file && activeTab.file.path) {
         this.setupTimer();
@@ -91,7 +97,7 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
       this.clearTimer();
     }
 
-    if (!this.timer && !configOpen && enabled) {
+    if (!this.timer && !configOpen && enabled && this.activeTab.file && this.activeTab.file.path) {
       this.setupTimer();
     }
   }
