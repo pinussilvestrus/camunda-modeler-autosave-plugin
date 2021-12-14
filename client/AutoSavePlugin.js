@@ -25,6 +25,11 @@ const defaultState = {
  * into the Camunda Modeler
  */
 export default class AutoSavePlugin extends PureComponent {
+  activeTab = {
+    id: '__empty',
+    type: 'empty'
+  };
+
   constructor(props) {
     super(props);
 
@@ -56,6 +61,7 @@ export default class AutoSavePlugin extends PureComponent {
     // subscribe to the event when the active tab changed in the application
     subscribe('app.activeTabChanged', ({ activeTab }) => {
       this.clearTimer();
+      this.activeTab = activeTab;
 
       if (this.state.enabled && activeTab.file && activeTab.file.path) {
         this.setupTimer();
@@ -80,7 +86,7 @@ export default class AutoSavePlugin extends PureComponent {
       this.clearTimer();
     }
 
-    if (!this.timer && !configOpen && enabled) {
+    if (!this.timer && !configOpen && enabled && this.activeTab.file && this.activeTab.file.path) {
       this.setupTimer();
     }
   }
