@@ -45,6 +45,7 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
     id: '__empty',
     type: 'empty'
   };
+  directEditingActivated = false;
 
   constructor(props) {
     super(props);
@@ -67,7 +68,46 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
       subscribe
     } = this.props; // retrieve plugin related information from the application configuration
 
-    config.getForPlugin('autoSave', 'config').then(config => this.setState(config)); // subscribe to the event when the active tab changed in the application
+    config.getForPlugin('autoSave', 'config').then(config => this.setState(config)); // subscribe to the creation of the BPMN modeler to detect modeling events
+
+    subscribe('bpmn.modeler.created', ({
+      modeler
+    }) => {
+      const eventBus = modeler.get('eventBus');
+      eventBus.on('directEditing.activate', () => this.directEditingActivated = true);
+      eventBus.on('directEditing.deactivate', () => this.directEditingActivated = false);
+    }); // subscribe to the creation of the DMN modeler to detect modeling events
+
+    subscribe('dmn.modeler.created', ({
+      modeler
+    }) => {
+      const eventBus = modeler._eventBus;
+      var mayChangeDirectEditingState = true; // workaround to ensure proper detection of the direct editing state as the fired event of the
+      // DMN modeler doesn't differentiate
+
+      eventBus.on('view.selectionChanged', event => {
+        if (modeler._activeView.type === 'drd') {
+          mayChangeDirectEditingState = event.oldSelection.length != event.newSelection.length;
+        }
+      });
+      eventBus.on('view.directEditingChanged', () => {
+        if (mayChangeDirectEditingState) {
+          this.directEditingActivated = true;
+        } else {
+          this.directEditingActivated = false;
+        }
+
+        mayChangeDirectEditingState = false;
+      });
+    }); // subscribe to the creation of the CMMN modeler to detect modeling events
+
+    subscribe('cmmn.modeler.created', ({
+      modeler
+    }) => {
+      const eventBus = modeler.get('eventBus');
+      eventBus.on('directEditing.activate', () => this.currentlyEditing = true);
+      eventBus.on('directEditing.deactivate', () => this.currentlyEditing = false);
+    }); // subscribe to the event when the active tab changed in the application
 
     subscribe('app.activeTabChanged', ({
       activeTab
@@ -104,7 +144,10 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
 
   setupTimer() {
     this.timer = setTimeout(() => {
-      this.save();
+      if (!this.directEditingActivated) {
+        this.save();
+      }
+
       this.setupTimer();
     }, this.state.interval * 1000);
   }
