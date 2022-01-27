@@ -7,6 +7,11 @@
     "type": "git",
     "url": "https://github.com/pinussilvestrus/camunda-modeler-autosave-plugin"
   },
+  "files": [
+    "dist",
+    "client/style.css",
+    "index.js"
+  ],
   "contributors": [
     "Maciej Barelkowski <maciej.barelkowski@camunda.com> (https://github.com/barmac)",
     "Niklas Kiefer <niklas.kiefer@camunda.com (https://github.com/pinussilvestrus)"
