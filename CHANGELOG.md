@@ -6,6 +6,10 @@ All notable changes to the [Camunda Modeler Autosave Plugin](https://github.com/
 
 ___Note:__ Yet to be released changes appear here._
 
+## 0.3.0
+
+* `feat`: migrate to Camunda Modeler v5 ([#61](https://github.com/pinussilvestrus/camunda-modeler-autosave-plugin/issues/61))
+
 ## 0.2.0
 
 * Initial release
