@@ -29,10 +29,6 @@ const defaultState = {
  * into the Camunda Modeler
  */
 export default class AutoSavePlugin extends PureComponent {
-  activeTab = {
-    id: '__empty',
-    type: 'empty'
-  };
 
   constructor(props) {
     super(props);
@@ -42,6 +38,11 @@ export default class AutoSavePlugin extends PureComponent {
     this.handleConfigClosed = this.handleConfigClosed.bind(this);
 
     this._buttonRef = React.createRef();
+
+    this.activeTab = {
+      id: '__empty',
+      type: 'empty'
+    };
   }
 
   componentDidMount() {

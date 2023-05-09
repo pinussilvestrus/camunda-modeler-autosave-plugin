@@ -40,24 +40,22 @@ const defaultState = {
   interval: 5,
   configOpen: false
 };
+
 /**
  * An example client extension plugin to enable auto saving functionality
  * into the Camunda Modeler
  */
-
 class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.PureComponent {
-  activeTab = {
-    id: '__empty',
-    type: 'empty'
-  };
-
   constructor(props) {
     super(props);
     this.state = defaultState;
     this.handleConfigClosed = this.handleConfigClosed.bind(this);
     this._buttonRef = camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createRef();
+    this.activeTab = {
+      id: '__empty',
+      type: 'empty'
+    };
   }
-
   componentDidMount() {
     /**
     * The component props include everything the Application offers plugins,
@@ -71,63 +69,60 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
     const {
       config,
       subscribe
-    } = this.props; // retrieve plugin related information from the application configuration
+    } = this.props;
 
-    config.getForPlugin('autoSave', 'config').then(config => this.setState(config)); // subscribe to the event when the active tab changed in the application
+    // retrieve plugin related information from the application configuration
+    config.getForPlugin('autoSave', 'config').then(config => this.setState(config));
 
+    // subscribe to the event when the active tab changed in the application
     subscribe('app.activeTabChanged', ({
       activeTab
     }) => {
       this.clearTimer();
       this.activeTab = activeTab;
-
       if (this.state.enabled && activeTab.file && activeTab.file.path) {
         this.setupTimer();
       }
-    }); // subscribe to the event when a tab was saved in the application
+    });
 
+    // subscribe to the event when a tab was saved in the application
     subscribe('tab.saved', () => {
       if (!this.timer && this.state.enabled) {
         this.setupTimer();
       }
     });
   }
-
   componentDidUpdate() {
     const {
       configOpen,
       enabled
     } = this.state;
-
     if (!enabled || configOpen) {
       this.clearTimer();
     }
-
     if (!this.timer && !configOpen && enabled && this.activeTab.file && this.activeTab.file.path) {
       this.setupTimer();
     }
   }
-
   setupTimer() {
     this.timer = setTimeout(() => {
       this.save();
       this.setupTimer();
     }, this.state.interval * 1000);
   }
-
   clearTimer() {
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;
     }
   }
-
   save() {
     const {
       displayNotification,
       triggerAction
-    } = this.props; // trigger a tab save operation
+    } = this.props;
 
+    // trigger a tab save operation
     triggerAction('save').then(tab => {
       if (!tab) {
         return displayNotification({
@@ -136,24 +131,21 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
       }
     });
   }
-
   handleConfigClosed(newConfig) {
     this.setState({
       configOpen: false
     });
-
     if (newConfig) {
       // via <config> it is also possible to save data into the application configuration
       this.props.config.setForPlugin('autoSave', 'config', newConfig).catch(console.error);
       this.setState(newConfig);
     }
   }
+
   /**
    * render any React component you like to extend the existing
    * Camunda Modeler application UI
    */
-
-
   render() {
     const {
       configOpen,
@@ -163,8 +155,9 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
     const initValues = {
       enabled,
       interval
-    }; // we can use fills to hook React components into certain places of the UI
+    };
 
+    // we can use fills to hook React components into certain places of the UI
     return /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__.Fill, {
       slot: "status-bar__app",
       group: "1_autosave"
@@ -182,7 +175,6 @@ class AutoSavePlugin extends camunda_modeler_plugin_helpers_react__WEBPACK_IMPOR
       initValues: initValues
     }));
   }
-
 }
 
 /***/ }),
@@ -206,8 +198,9 @@ __webpack_require__.r(__webpack_exports__);
 
 const OFFSET = {
   right: 0
-}; // we can even use hooks to render into the application
+};
 
+// we can even use hooks to render into the application
 function ConfigOverlay({
   anchor,
   initValues,
@@ -215,13 +208,12 @@ function ConfigOverlay({
 }) {
   const [enabled, setEnabled] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)(initValues.enabled);
   const [interval, setAutoSaveInterval] = (0,camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0__.useState)(initValues.interval);
-
   const onSubmit = () => onClose({
     enabled,
     interval
-  }); // we can use the built-in styles, e.g. by adding "btn btn-primary" class names
+  });
 
-
+  // we can use the built-in styles, e.g. by adding "btn btn-primary" class names
   return /*#__PURE__*/camunda_modeler_plugin_helpers_react__WEBPACK_IMPORTED_MODULE_0___default().createElement(camunda_modeler_plugin_helpers_components__WEBPACK_IMPORTED_MODULE_1__.Overlay, {
     anchor: anchor,
     onClose: onClose,
@@ -852,9 +844,9 @@ module.exports = window.react;
 /***/ ((module, exports) => {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
-  Copyright (c) 2018 Jed Watson.
-  Licensed under the MIT License (MIT), see
-  http://jedwatson.github.io/classnames
+	Copyright (c) 2018 Jed Watson.
+	Licensed under the MIT License (MIT), see
+	http://jedwatson.github.io/classnames
 */
 /* global define */
 
@@ -862,6 +854,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 	'use strict';
 
 	var hasOwn = {}.hasOwnProperty;
+	var nativeCodeString = '[native code]';
 
 	function classNames() {
 		var classes = [];
@@ -882,14 +875,15 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 					}
 				}
 			} else if (argType === 'object') {
-				if (arg.toString === Object.prototype.toString) {
-					for (var key in arg) {
-						if (hasOwn.call(arg, key) && arg[key]) {
-							classes.push(key);
-						}
-					}
-				} else {
+				if (arg.toString !== Object.prototype.toString && !arg.toString.toString().includes('[native code]')) {
 					classes.push(arg.toString());
+					continue;
+				}
+
+				for (var key in arg) {
+					if (hasOwn.call(arg, key) && arg[key]) {
+						classes.push(key);
+					}
 				}
 			}
 		}
@@ -925,8 +919,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/camunda-modeler-plugin-helpers/react.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
+function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (({
   styles = {},
@@ -1033,6 +1026,7 @@ __webpack_require__.r(__webpack_exports__);
  * Camunda licenses this file to you under the MIT; you may not use this file
  * except in compliance with the MIT License.
  */
+
 
 
 (0,camunda_modeler_plugin_helpers__WEBPACK_IMPORTED_MODULE_0__.registerClientExtension)(_AutoSavePlugin__WEBPACK_IMPORTED_MODULE_1__["default"]);
