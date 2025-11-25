@@ -1,3 +1,5 @@
+> ⚠️ This project is not actively maintained and won't likely get any updates.
+
 # camunda-modeler-autosave-plugin
 
 ![Build Status](https://github.com/pinussilvestrus/camunda-modeler-autosave-plugin/workflows/ci/badge.svg)
