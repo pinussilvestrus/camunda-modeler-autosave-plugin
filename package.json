@@ -25,7 +25,7 @@
     "test": "run-s lint"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.3",
+    "@babel/core": "^8.0.0",
     "camunda-modeler-plugin-helpers": "^5.1.0",
     "camunda-modeler-webpack-plugin": "^0.1.0",
     "classnames": "^2.3.2",
